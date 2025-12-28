@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart ETA Predictor</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- ── Sidebar ────────────────────────────────────────────────────── -->
+    <aside id="sidebar">
+      <h1>Smart ETA</h1>
+
+      <!-- Route inputs -->
+      <section class="card" id="route-form">
+        <h2>Route</h2>
+        <label>
+          Origin
+          <input id="origin-lat"  type="number" step="any" placeholder="Lat"  value="37.7749" />
+          <input id="origin-lng"  type="number" step="any" placeholder="Lng"  value="-122.4194" />
+        </label>
+        <label>
+          Destination
+          <input id="dest-lat"   type="number" step="any" placeholder="Lat"  value="37.7849" />
+          <input id="dest-lng"   type="number" step="any" placeholder="Lng"  value="-122.4094" />
+        </label>
+        <div class="row">
+          <label>
+            Hour
+            <input id="hour"        type="number" min="0" max="23" value="9" />
+          </label>
+          <label>
+            Day (0=Sun)
+            <input id="day-of-week" type="number" min="0" max="6"  value="1" />
+          </label>
+        </div>
+        <button id="find-route-btn" class="primary">Find Route</button>
+      </section>
+
+      <!-- Route info -->
+      <section class="card" id="route-info" style="display:none">
+        <h2>Route Info</h2>
+        <p>ETA: <strong id="eta-display">—</strong></p>
+        <p>Distance: <strong id="dist-display">—</strong></p>
+        <div id="status-badge" class="badge">Ready</div>
+      </section>
+
+      <!-- Event injection -->
+      <section class="card" id="event-panel">
+        <h2>Inject Congestion</h2>
+        <p class="hint">Click on the map to pick a segment, then fire the event.</p>
+        <label>
+          Severity (1× – 10×)
+          <input id="severity-slider" type="range" min="1" max="10" step="0.5" value="3" />
+          <span id="severity-value">3×</span>
+        </label>
+        <label class="checkbox-label">
+          <input id="closed-checkbox" type="checkbox" /> Road closed
+        </label>
+        <button id="inject-btn" class="danger" disabled>Fire Event</button>
+        <button id="reset-btn"  class="secondary">Reset All Events</button>
+      </section>
+
+      <!-- WebSocket status -->
+      <div id="ws-status" class="ws-indicator disconnected">WS: disconnected</div>
+    </aside>
+
+    <!-- ── Map ────────────────────────────────────────────────────────── -->
+    <main id="map-container">
+      <div id="map"></div>
+    </main>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- App scripts -->
+  <script src="events.js"></script>
+  <script src="map.js"></script>
+</body>
+</html>
